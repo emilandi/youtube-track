@@ -1,32 +1,20 @@
-/*body {
-  background: #fdfcfb;
-  font-size: 50%;
-  font-family: 'PT Mono';  
-  color: #222;
-  margin:0;  
-}*/
-
 #track{
 	display:block;
 }
 
 #back{
-	margin-left:0px;	
-	
+	margin-left:0px;		
 }
 
 #next{
 	margin-left:10px;		
 }
 
-
-
 .ytClass{	
 	vertical-align: middle;   
     font-size: 1.5rem;
     font-weight: 500;  
-    text-transform: uppercase;
-	
+    text-transform: uppercase;	
 	background-color: var(--yt-spec-brand-subscribe-button-background);
     color: #fff;
 	cursor: pointer;
