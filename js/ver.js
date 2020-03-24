@@ -98,7 +98,7 @@ function init(){
 						var title = 'Anterior Track ' + parseFloat(actual-1);					
 					}
 					
-					checkPos();				
+					checkPos();	
 					
 					this.setAttribute('title',title);
 					console.log(video.currentTime + ' -  Track: ' + actual );					
@@ -133,10 +133,7 @@ function init(){
 
 function checkPos(){	
 	console.log(pos);
-	if(pos.length){
-		setColor('back',enableColor);
-		setColor('next',enableColor);
-	}else{
+	if(pos.length==0){
 		setColor('back',disableColor);
 		setColor('next',disableColor);
 	}
