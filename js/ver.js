@@ -129,9 +129,6 @@ function createDiv () {
 	}	
 }
 
-
-
-
 function checkPos(){	
 	console.log(pos);
 	if(pos.length==0){
@@ -300,11 +297,7 @@ function createBtn(tipo,id,clase,texto) {
 }
 
 function getTime () {
-	video.currentTime;
-}
-
-function gotTime (time) {
-	video.currentTime=time;
+	return video.currentTime;
 }
 
 function getHost(){
@@ -331,9 +324,7 @@ function getNombresNew() {
 	}
 }
 
-function fixStr(value) {		
-	
-	//var value ='1- Seguir viviendo sin tu amor (';
+function fixStr(value) {			
 	
 	var cadenaTime=/([0-9][0-9])?([0-9]?[0-3])?:([0-5][0-9])/g;	
 	var cadenaStr = /^(\d)+|(\d+-)|([=?*+#$%\-:↵")(])/g	
@@ -344,6 +335,7 @@ function fixStr(value) {
 	if(str.length > 150){
 		str='***';
 	}
+	
 	console.log(str);	
 	return str;
 }
@@ -355,51 +347,8 @@ function lnk(value) {
 }
 
 
-
-
-
-// if(pos.length==0){
-// 	setColor('back',disableColor);
-// 	setColor('next',disableColor);		
-// }else{
-// 	setColor('back',enableColor);
-// 	setColor('next',enableColor);		
-// }
-
-
-// function dameSalto(actual,action){
-// 	console.clear();
-// 	var elem = document.querySelectorAll(selector);	
-	
-// 	if(action=='next'){
-// 		for (i = 1; i <= elem.length - 1; i++) {	
-// 			var obj = elem[i];			
-// 			var nro = convert(obj);	
-			
-// 			if(actual < nro ) {			
-// 				var target = nro;
-// 				console.log('Proximo salto: ' + target);
-// 				return target;
-// 			}
-// 		};
-// 	}	
-	
-// 	if(action=='back')	{		
-// 		for (var i = elem.length -1; i > 0 ; i--) {			
-// 			var obj = elem[i];			
-// 			var nro = convert(obj);	
-// 			console.log('nro: ' + nro);
-// 			if(actual > nro ) {			
-// 				var nro = convert(elem[i-1])
-// 				var target = nro;
-// 				console.log('Proximo salto: ' + target);
-// 				return target;
-// 			}	
-// 		}			
-// 	}	
-// }
-
-/* function convert(input) {		
+/* 
+function convert(input) {		
 	var str = input;
 	var times = str.split(":");
 	times.reverse();
@@ -409,4 +358,5 @@ function lnk(value) {
 	    y += z;
 	}	
 	return(y);	
-} */
+} 
+*/
