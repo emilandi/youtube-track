@@ -26,28 +26,26 @@ function init(){
 }
 
 function fnVideo () {	
-	var clase='video-stream html5-main-video';		
+	var clase='video-stream html5-main-video';			
+
 	video = document.getElementsByClassName(clase)[0];
-	video = document.querySelector('video');	    	
+	video = document.querySelector('video');	
+
 	if(video){
 		
-		video.addEventListener("play", getPos);	//crear boton;		
-		
+		video.addEventListener("play", getPos);	//crear boton;				
 		video.addEventListener('canplay', (event) => {
-			console.log('CanPlay Video can start, but not sure it will play through.');
-			console.log(document.getElementById('description'));
-
-			setTimeout(function() {
-				getPos();
-				checkPos();			 	
-			}, 2000);
-
+			console.log('CanPlay Video can start, but not sure it will play through.');			
+			// setTimeout(function() {
+			// 	getPos();
+			// 	checkPos();			 	
+			// }, 2000);
 		});
 
 		video.addEventListener('seeked', (event) => {
 			
 			console.log('Video found the playback position it was looking for.');			
-			var len = pos.length;			
+			var len = pos.length;		
 			
 			if(video.currentTime >= pos[1]){
 				setColor('back',enableColor);
@@ -79,7 +77,7 @@ function createDiv () {
 			
 			console.log('Cantidad: ' + objClass.length);
 			console.log('Cantidad: ' + objSelector.length);
-						
+
 			var H1 = 'h1.title.style-scope.ytd-video-primary-info-renderer';
 			var root = document.querySelector(H1);			
 			var elem = document.getElementById('track');
