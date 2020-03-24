@@ -22,12 +22,12 @@ $(init);
 
 //$(window).load(init);
 
-window.addEventListener("load", function () {
-    
+function fnVideo () {
 	pos=[];		
 	var clase='video-stream html5-main-video';		
-	video = document.getElementsByClassName(clase)[0];	    
-	
+	//video = document.getElementsByClassName(clase)[0];
+	video = document.querySelector('video');	    
+	console.log(video);
 	if(video){
 		video.addEventListener("play", init);	//crear boton;				
 		video.addEventListener("loadedmetadata", init);	//crear boton;		
@@ -49,22 +49,18 @@ window.addEventListener("load", function () {
 				setColor('next',disableColor);
 			}			
 		})
+	return video;
 	};
+}
 
-}, false);
-			
 
-function init(){
-	pos=[];
-	nombres=[];
-	console.clear();
-	console.log('document ready!');	
-	
+function createDiv () {
+
 	var host=getHost();
 	if(host=="www.youtube.com"){			
 		var desc =  document.getElementById('description');
 		if(desc){
-			console.clear();
+			console.clear();			
 			
 			var objClass = desc.getElementsByClassName(clase);
 			var objSelector=desc.querySelectorAll(selector);
@@ -128,7 +124,15 @@ function init(){
 		}		
 		fnShow('block');	
 	}	
-	
+}
+
+function init(){
+	pos=[];
+	nombres=[];
+	console.clear();
+	console.log('document ready!');	
+	video = fnVideo();
+	createDiv();
 }
 
 function checkPos(){	
@@ -157,8 +161,7 @@ function getPos(desc){
 			for (i = 0; i <= elem.length - 1; i++) {	
 				var obj = elem[i];
 				var nro = convert(obj); //obtener nro de la url
-				fillPos(nro); 			//llenar array con datos
-	
+				fillPos(nro); 			//llenar array con datos	
 			};			
 			console.log(pos);
 		}
