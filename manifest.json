@@ -18,7 +18,8 @@
       "include_globs": [ "https://www.youtube.com/*" ],
       "js": [ "js/jquery-2.1.4.min.js","js/ver.js"],      
       "matches": ["https://www.youtube.com/*"],    
-      "css":["css/estilo.css"]      
+      "css":["css/estilo.css"], 
+      "run_at": "document_end"      
    } ]
 	
 }

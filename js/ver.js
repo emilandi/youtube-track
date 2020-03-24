@@ -8,31 +8,38 @@ var enableColor = 'red';
 
 $(init);
 
-/* 
-$(document).ready(function() {            
+$(document).ready(function() {       
 	console.clear();
-	console.log('ready!');		
-	var host=getHost();
-	if(host=="www.youtube.com"){
-		init();	}	
-
+	console.log('document ready!');
 });
-*/
 
-//$(window).load(init);
+$(window).load(function () {	
+	console.log('window ready!');		
+});
 
-//document.addEventListener('mousemove',init,false);
+function log(e) {
+	console.log(e);
+}
 
-function fnVideo () {
-	//pos=[];		
+function fnVideo () {	
 	var clase='video-stream html5-main-video';		
-	//video = document.getElementsByClassName(clase)[0];
-	video = document.querySelector('video');	    
-	console.log(video);
+	video = document.getElementsByClassName(clase)[0];
+	video = document.querySelector('video');	    	
 	if(video){
-		video.addEventListener("play", init);	//crear boton;				
-		video.addEventListener("loadedmetadata", init);	//crear boton;		
 		
+		video.addEventListener("play", getPos);	//crear boton;		
+		
+		video.addEventListener('canplay', (event) => {
+			console.log('CanPlay Video can start, but not sure it will play through.');
+			console.log(document.getElementById('description'));
+
+			setTimeout(function() {
+				getPos();
+				checkPos();			 	
+			}, 2000);
+
+		});
+
 		video.addEventListener('seeked', (event) => {
 			
 			console.log('Video found the playback position it was looking for.');			
@@ -48,7 +55,7 @@ function fnVideo () {
 				setColor('next',enableColor);
 			}else{
 				setColor('next',disableColor);
-			}			
+			}	
 		})
 	return video;
 	};
@@ -61,8 +68,8 @@ function createDiv () {
 	if(host=="www.youtube.com"){			
 		var desc =  document.getElementById('description');
 		if(desc){
-			//console.clear();			
-			
+			console.clear();
+
 			var objClass = desc.getElementsByClassName(clase);
 			var objSelector = desc.querySelectorAll(selector);
 			
@@ -95,8 +102,7 @@ function createDiv () {
 						var title = 'Anterior Track ' + parseFloat(actual-1);					
 					}					
 					this.setAttribute('title',title);
-					console.log(video.currentTime + ' -  Track: ' + actual );				
-					//checkPos();								
+					console.log(video.currentTime + ' -  Track: ' + actual );									
 				})
 				
 				btnAdelante.addEventListener('mouseover',function(e){					
@@ -108,8 +114,7 @@ function createDiv () {
 						var title = 'Siguiente Track ' + parseFloat(actual+1);
 					}					
 					this.setAttribute('title',title);					
-					console.log(video.currentTime + ' -  Track: ' + actual );
-					//checkPos();								
+					console.log(video.currentTime + ' -  Track: ' + actual );					
 				})			
 			}	
 		
@@ -121,25 +126,26 @@ function createDiv () {
 }
 
 function init(){	
-	nombres=[];
-	//console.clear();
+	pos=[];
+	nombres=[];	
+	console.clear();
 	console.log('document ready!');	
-	video = fnVideo();
-	createDiv();	
+	fnVideo();
+	createDiv();
+	getPos();
 	checkPos();
-	
-	// if(pos.length){
-	// 	setColor('back',enableColor);
-	// 	setColor('next',enableColor);
-	// }
+	console.log(pos);
 }
+
 
 function checkPos(){	
 	console.log(pos);
 	if(pos.length==0){
+		console.log('No se encontraron tracks');
 		setColor('back',disableColor);
-		setColor('next',disableColor);
+		setColor('next',disableColor);		
 	}else{
+		console.log('Se encontraron ' + pos.length + ' tracks');		
 		setColor('back',enableColor);
 		setColor('next',enableColor);
 	}
@@ -157,8 +163,7 @@ function getPos(){
 	pos=[];	//array posiciones
 	var desc = document.getElementById('description');		
 	if(desc){
-		var elem = desc.querySelectorAll(selector);		
-		console.clear();		
+		var elem = desc.querySelectorAll(selector);				
 		if(elem.length > 0){			
 			for (i = 0; i <= elem.length - 1; i++) {	
 				var obj = elem[i];
@@ -224,8 +229,7 @@ function getMin() {
 
 function trackActual(nro) {			
 	var elem = pos;
-	var len = pos.length;
-	console.log(elem,len,nro);
+	var len = pos.length;	
 	for (i = 0; i <= elem.length - 1; i++) {	
 		var obj = elem[i];
 		if(nro >= elem[len-1]){
@@ -355,6 +359,10 @@ function lnk(value) {
 	//verifica si la url es de salto ej. watch?v=KBvfVKOv8WE&list=2&t=676s
 	return value.match(/\&t=/);
 }
+
+
+
+
 
 // if(pos.length==0){
 // 	setColor('back',disableColor);
