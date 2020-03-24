@@ -8,22 +8,23 @@ var enableColor = 'red';
 
 $(init);
 
-/* $(document).ready(function() {            
-
+/* 
+$(document).ready(function() {            
 	console.clear();
-	console.log('ready!');	
-	
+	console.log('ready!');		
 	var host=getHost();
 	if(host=="www.youtube.com"){
-		init();
-	}	
+		init();	}	
 
-}); */
+});
+*/
 
 //$(window).load(init);
 
+//document.addEventListener('mousemove',init,false);
+
 function fnVideo () {
-	pos=[];		
+	//pos=[];		
 	var clase='video-stream html5-main-video';		
 	//video = document.getElementsByClassName(clase)[0];
 	video = document.querySelector('video');	    
@@ -55,15 +56,15 @@ function fnVideo () {
 
 
 function createDiv () {
-
+	console.log('Creando Div..');
 	var host=getHost();
 	if(host=="www.youtube.com"){			
 		var desc =  document.getElementById('description');
 		if(desc){
-			console.clear();			
+			//console.clear();			
 			
 			var objClass = desc.getElementsByClassName(clase);
-			var objSelector=desc.querySelectorAll(selector);
+			var objSelector = desc.querySelectorAll(selector);
 			
 			console.log('Cantidad: ' + objClass.length);
 			console.log('Cantidad: ' + objSelector.length);
@@ -76,6 +77,7 @@ function createDiv () {
 				console.log('Creando Div');
 				var div = document.createElement('div');
 				div.id='track';
+				div.style.display='block';
 				root.appendChild(div);			
 		
 				var btnAtras = createBtn('a','back','ytClass','<<');		
@@ -85,54 +87,51 @@ function createDiv () {
 				btnAdelante.addEventListener('click',fnAdelante);
 			
 				btnAtras.addEventListener('mouseover',function(e){										
-					getPos(desc);
-					getNombres();
-					
+					getPos();
+					getNombres();					
 					var title='';
 					var actual = trackActual(video.currentTime);					
 					if(actual>1){
 						var title = 'Anterior Track ' + parseFloat(actual-1);					
-					}
-					
-					checkPos();	
-					
+					}					
 					this.setAttribute('title',title);
-					console.log(video.currentTime + ' -  Track: ' + actual );					
+					console.log(video.currentTime + ' -  Track: ' + actual );				
+					//checkPos();								
 				})
 				
 				btnAdelante.addEventListener('mouseover',function(e){					
-					
-					getPos(desc);
+					getPos();
 					getNombres();
-
 					var title = '';					
 					var actual = trackActual(video.currentTime);
 					if(actual < pos.length){
 						var title = 'Siguiente Track ' + parseFloat(actual+1);
-					}						
-					
-					this.setAttribute('title',title);
-					
-					checkPos();			
-					
+					}					
+					this.setAttribute('title',title);					
 					console.log(video.currentTime + ' -  Track: ' + actual );
+					//checkPos();								
 				})			
 			}	
 		
 		}else{
 			console.log('No Hay descripcion');
 		}		
-		fnShow('block');	
+		fnShow('track','block');
 	}	
 }
 
-function init(){
-	pos=[];
+function init(){	
 	nombres=[];
-	console.clear();
+	//console.clear();
 	console.log('document ready!');	
 	video = fnVideo();
-	createDiv();
+	createDiv();	
+	checkPos();
+	
+	// if(pos.length){
+	// 	setColor('back',enableColor);
+	// 	setColor('next',enableColor);
+	// }
 }
 
 function checkPos(){	
@@ -140,6 +139,9 @@ function checkPos(){
 	if(pos.length==0){
 		setColor('back',disableColor);
 		setColor('next',disableColor);
+	}else{
+		setColor('back',enableColor);
+		setColor('next',enableColor);
 	}
 	return pos.length;
 }
@@ -151,12 +153,12 @@ function setColor(id,value) {
 	}
 }
 
-function getPos(desc){
-	pos=[];	//array posiciones	
-	var elem = document.getElementsByClassName(clase);
-	var elem = desc.querySelectorAll(selector);
-	if(elem){
-		//console.clear();		
+function getPos(){
+	pos=[];	//array posiciones
+	var desc = document.getElementById('description');		
+	if(desc){
+		var elem = desc.querySelectorAll(selector);		
+		console.clear();		
 		if(elem.length > 0){			
 			for (i = 0; i <= elem.length - 1; i++) {	
 				var obj = elem[i];
@@ -164,9 +166,9 @@ function getPos(desc){
 				fillPos(nro); 			//llenar array con datos	
 			};			
 			console.log(pos);
-		}
+		}		
 	}	
-	return pos;
+	return pos;	
 }
 
 function fillPos(value){	
@@ -175,8 +177,8 @@ function fillPos(value){
 	}	
 }
 
-function fnShow(value){	
-	var elem = document.getElementById('track');
+function fnShow(id,value){	
+	var elem = document.getElementById(id);
 	if(elem){
 		elem.style.display=value;
 	}
@@ -220,8 +222,7 @@ function getMin() {
 	return Math.min(...pos);
 }
 
-function trackActual(nro) {	
-		
+function trackActual(nro) {			
 	var elem = pos;
 	var len = pos.length;
 	console.log(elem,len,nro);
@@ -332,7 +333,6 @@ function getNombresNew() {
 	}
 }
 
-
 function fixStr(value) {		
 	
 	//var value ='1- Seguir viviendo sin tu amor (';
@@ -352,8 +352,7 @@ function fixStr(value) {
 
 
 function lnk(value) {	
-	//verifica si la url es de salto 
-	// ej. watch?v=KBvfVKOv8WE&list=2&t=676s
+	//verifica si la url es de salto ej. watch?v=KBvfVKOv8WE&list=2&t=676s
 	return value.match(/\&t=/);
 }
 
@@ -364,7 +363,6 @@ function lnk(value) {
 // 	setColor('back',enableColor);
 // 	setColor('next',enableColor);		
 // }
-
 
 
 // function dameSalto(actual,action){
