@@ -79,9 +79,9 @@ function createDiv () {
 			
 			console.log('Cantidad: ' + objClass.length);
 			console.log('Cantidad: ' + objSelector.length);
-
-			//crear botones							
-			var root = document.getElementsByTagName('H1')[0];		
+						
+			var H1 = 'h1.title.style-scope.ytd-video-primary-info-renderer';
+			var root = document.querySelector(H1);			
 			var elem = document.getElementById('track');
 			
 			if(!elem){
