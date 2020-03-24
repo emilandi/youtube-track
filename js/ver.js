@@ -6,19 +6,23 @@ var selector = 'a.yt-simple-endpoint.style-scope.yt-formatted-string';
 var disableColor = 'grey';
 var enableColor = 'red';
 
-$(init);
+$(window).load(init);
+$(document).ready(init);
 
-$(document).ready(function() {       
+function init(){	
+	pos=[];
+	nombres=[];	
+	
+	setTimeout(function() {		
+		createDiv();
+		fnVideo();
+		getPos();
+		checkPos();
+	}, 2000);
+	
 	console.clear();
-	console.log('document ready!');
-});
-
-$(window).load(function () {	
-	console.log('window ready!');		
-});
-
-function log(e) {
-	console.log(e);
+	console.log('ready!');	
+	console.log(pos);
 }
 
 function fnVideo () {	
@@ -125,17 +129,7 @@ function createDiv () {
 	}	
 }
 
-function init(){	
-	pos=[];
-	nombres=[];	
-	console.clear();
-	console.log('document ready!');	
-	fnVideo();
-	createDiv();
-	getPos();
-	checkPos();
-	console.log(pos);
-}
+
 
 
 function checkPos(){	
