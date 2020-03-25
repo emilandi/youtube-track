@@ -42,22 +42,9 @@ function fnVideo () {
 			 }, 2000);
 		});
 
-		video.addEventListener('seeked', (event) => {
-			
+		video.addEventListener('seeked', (event) => {			
 			console.log('Video found the playback position it was looking for.');			
-			var len = pos.length;		
-			
-			if(video.currentTime >= pos[1]){
-				setColor('back',enableColor);
-			}else{
-				setColor('back',disableColor);
-			}
-
-			if(video.currentTime < pos[len -1]){
-				setColor('next',enableColor);
-			}else{
-				setColor('next',disableColor);
-			}	
+			checkPos();				
 		})
 	return video;
 	};
@@ -104,7 +91,9 @@ function createDiv () {
 						var title = 'Anterior Track ' + parseFloat(actual-1);					
 					}					
 					this.setAttribute('title',title);
-					console.log(video.currentTime + ' -  Track: ' + actual );									
+					
+					console.clear();
+					console.log(video.currentTime + ' -  Track: ' + actual  + ' - ' + nombres[actual+1] );					
 				})
 				
 				btnAdelante.addEventListener('mouseover',function(e){					
@@ -116,7 +105,10 @@ function createDiv () {
 						var title = 'Siguiente Track ' + parseFloat(actual+1);
 					}					
 					this.setAttribute('title',title);					
-					console.log(video.currentTime + ' -  Track: ' + actual );					
+					
+					console.clear();
+					console.log(video.currentTime + ' -  Track: ' + actual  + ' - ' + nombres[actual+1] );
+
 				})			
 			}	
 		
@@ -128,16 +120,30 @@ function createDiv () {
 }
 
 function checkPos(){	
-	console.log(pos);
-	if(pos.length==0){
+	console.log(pos);		
+	var len = pos.length;	
+	if(len==0){		
 		console.log('No se encontraron tracks');
 		setColor('back',disableColor);
-		setColor('next',disableColor);		
+		setColor('next',disableColor);
 	}else{
-		console.log('Se encontraron ' + pos.length + ' tracks');		
+		console.log('Se encontraron ' + pos.length + ' tracks');						
 		setColor('back',enableColor);
-		setColor('next',enableColor);
+		setColor('next',enableColor);	
+	
+		if(video.currentTime >= pos[1]){		
+			setColor('back',enableColor);
+		}else{
+			//setColor('back',disableColor);
+		}
+
+		if(video.currentTime < pos[len -1]){
+			setColor('next',enableColor);
+		}else{
+			setColor('next',disableColor);		
+		}	
 	}
+
 	return pos.length;
 }
 
