@@ -36,10 +36,10 @@ function fnVideo () {
 		video.addEventListener("play", getPos);	//crear boton;				
 		video.addEventListener('canplay', (event) => {
 			console.log('CanPlay Video can start, but not sure it will play through.');			
-			// setTimeout(function() {
-			// 	getPos();
-			// 	checkPos();			 	
-			// }, 2000);
+			 setTimeout(function() {
+			 	getPos();
+			 	checkPos();			 	
+			 }, 2000);
 		});
 
 		video.addEventListener('seeked', (event) => {
