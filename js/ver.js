@@ -149,8 +149,8 @@ function setColor(id,value) {
 }
 
 function getPos(){
-	pos=[];	//array posiciones
-	var desc = document.getElementById('description');		
+	pos=[];	//array posiciones	
+	var desc = document.querySelector('div#description')	
 	if(desc){
 		var elem = desc.querySelectorAll(selector);				
 		if(elem.length > 0){			
