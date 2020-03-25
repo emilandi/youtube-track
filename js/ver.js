@@ -73,7 +73,7 @@ function createDiv () {
 				console.log('Creando Div');
 				var div = document.createElement('div');
 				div.id='track';
-				div.style.display='block';
+				div.style.display='none';
 				root.appendChild(div);			
 		
 				var btnAtras = createBtn('a','back','ytClass','<<');		
@@ -177,11 +177,26 @@ function fillPos(value){
 	}	
 }
 
-function fnShow(id,value){	
-	var elem = document.getElementById(id);
-	if(elem){
-		elem.style.display=value;
-	}
+
+function fnShow(value){	
+
+	//sino tiene tracks ocultar DIV
+	if(value=='none'){		
+		$("#track").fadeIn(600, function () {					
+			$("#back").show().fadeOut(600);
+			$("#next").show().fadeOut(600);			
+		});	
+	}else{
+		$("#track").fadeIn(600, function () {					
+			$("#back").show().fadeIn(600);
+			$("#next").show().fadeIn(600);			
+		});	
+	}	
+	
+	//var elem = document.getElementById('track');
+	//if(elem){
+		//elem.style.display=value;
+	//}
 }
 
 function fnAtras(){
