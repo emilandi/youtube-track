@@ -66,6 +66,7 @@ function createDiv () {
 			console.log('Cantidad: ' + objSelector.length);
 
 			var H1 = 'h1.title.style-scope.ytd-video-primary-info-renderer';
+
 			var root = document.querySelector(H1);			
 			var elem = document.getElementById('track');
 			
@@ -111,7 +112,21 @@ function createDiv () {
 
 				})			
 			}	
-		
+
+			// //infobar			
+			// var elem = document.getElementById('infobar');
+			// if (!elem){				
+			// 	var div = document.getElementById('columns');		
+			// 	if(div){
+			// 		elem = document.createElement('div');
+			// 		elem.id='infobar';					
+			// 		elem.innerText='VALUE';					
+			// 		div.appendChild(elem);					
+			// 		elem.style.width =  video.style.width;					
+			// 		elem.style.left =  video.style.left;
+			// 	}	
+			// }		
+			
 		}else{
 			console.log('No Hay descripcion');
 		}		

@@ -2,6 +2,24 @@
 	display:none;
 }
 
+#infobar{
+	width: 30%;
+	height: 60px;
+	border: #fff 1px solid;
+	color: black;
+	font-size: 18px;
+	font-style: normal;
+	font-family: monospace;	
+	text-align: center;	
+	background-color: white;
+    position: absolute;
+    height: 60px;    
+    margin-bottom: 0px;
+	/* display: block; */
+    /* float: left; */
+    top: 100x;
+}
+
 #back{
 	margin-left:0px;		
 }
