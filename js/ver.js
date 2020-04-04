@@ -163,7 +163,8 @@ function checkPos(){
 }
 
 function setColor(id,value) {
-	var elem = document.getElementById(id);
+	var elem = document.querySelector('a.ytClass#' + id);
+	//var elem = document.getElementById(id);
 	if(elem){
 		elem.style.backgroundColor=value;
 	}
