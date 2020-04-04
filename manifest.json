@@ -2,7 +2,7 @@
 "manifest_version": 2,
 "name": "Youtube Track",
 "description": "Change next and prev track in full disc",
-"version": "1.0.2",
+"version": "1.0.3",
 "icons": {"16": "img/icon.png",        
 		  "19": "img/icon.png",		  
 		  "24": "img/icon.png",
