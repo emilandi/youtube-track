@@ -89,7 +89,7 @@ function createDiv () {
 					var title='';
 					var actual = trackActual(video.currentTime);					
 					if(actual>1){
-						var title = 'Anterior Track ' + parseFloat(actual-1);					
+						var title = 'Anterior (' + parseFloat(actual-1) + ')';					
 					}					
 					this.setAttribute('title',title);
 					
@@ -103,7 +103,7 @@ function createDiv () {
 					var title = '';					
 					var actual = trackActual(video.currentTime);
 					if(actual < pos.length){
-						var title = 'Siguiente Track ' + parseFloat(actual+1);
+						var title = 'Siguiente (' + parseFloat(actual+1) + ')';
 					}					
 					this.setAttribute('title',title);					
 					
