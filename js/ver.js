@@ -351,14 +351,6 @@ function getNombres() {
 	console.log(nombres);
 }
 
-
-function getNombresNew() {
-	var selectorName = 'yt-formatted-string.content.style-scope.ytd-video-secondary-info-renderer';
-	var elem = document.querySelectorAll(selectorName);
-	if (elem) {	
-	}
-}
-
 function fixStr(value) {			
 	
 	var cadenaTime=/([0-9][0-9])?([0-9]?[0-3])?:([0-5][0-9])/g;	
@@ -373,6 +365,13 @@ function fixStr(value) {
 	
 	console.log(str);	
 	return str;
+}
+
+function getNombresNew() {
+	var selectorName = 'yt-formatted-string.content.style-scope.ytd-video-secondary-info-renderer';
+	var elem = document.querySelectorAll(selectorName);
+	if (elem) {	
+	}
 }
 
 
