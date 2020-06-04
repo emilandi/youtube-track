@@ -4,7 +4,7 @@ var nombres = new Array();
 var clase = 'yt-simple-endpoint style-scope yt-formatted-string';
 var selector = 'a.yt-simple-endpoint.style-scope.yt-formatted-string';
 var disableColor = 'grey';
-var enableColor = 'red';
+var enableColor = '#bb1c2c';
 
 $(window).load(init);
 $(document).ready(init);
@@ -67,18 +67,14 @@ function fnVideo () {
 
 
 function createDiv () {
-	//console.log('Creando Div..');
+	
 	var host=getHost();
-	//if(host=="www.youtube.com"){			
+	
 		var desc =  document.getElementById('description');
-		if(desc){
-			//console.clear();
+		if(desc){			
 
 			var objClass = desc.getElementsByClassName(clase);
-			var objSelector = desc.querySelectorAll(selector);
-			
-			//console.log('Cantidad: ' + objClass.length);
-			//console.log('Cantidad: ' + objSelector.length);
+			var objSelector = desc.querySelectorAll(selector);	
 
 			var H1 = 'h1.title.style-scope.ytd-video-primary-info-renderer';
 
@@ -86,7 +82,7 @@ function createDiv () {
 			var elem = document.getElementById('track');
 			
 			if(!elem){
-				//console.log('Creando Div');
+				
 				var div = document.createElement('div');
 				div.id='track';
 				div.style.display='none';
@@ -127,23 +123,20 @@ function createDiv () {
 						var track = parseFloat(actual+1);
 						var info = 'Track N° ' + track ;						
 					}					
-					this.setAttribute('title',info);
-										
+					this.setAttribute('title',info);										
 					
 					console.clear();
 					console.log(video.currentTime + ' -  Current track: ' + actual);					
 
 				})			
-			}	
-					
+			}						
 			
 		}else{
 			console.log('No Hay descripcion');
 		}		
 		
 		fnShow('track','block');
-	
-		//}	
+		
 }
 
 function checkPos(){	
