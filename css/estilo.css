@@ -48,7 +48,9 @@
 	border:0.3px solid; 
 } */
 
-
+.ytClass:hover{
+	font-size: 1.2em;
+}
 
  .ytClass{	
 	cursor: pointer;
@@ -58,7 +60,7 @@
 	background-color: 	#CC0000;
 	border: none !important;
 	vertical-align: middle;   
-    font-size: 1.2em;    
+    font-size: 1em;    
     color: white;    
     text-align: center;
     text-decoration: none;    
