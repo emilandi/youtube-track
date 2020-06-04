@@ -28,14 +28,10 @@
 	margin-left:10px;		
 }
 
-.ytClass:hover
-{
-	opacity:1;
-}
-
-.ytClass{
-
-	opacity:0.85;
+/* original css */
+ 
+/* .ytClass{
+	 opacity:0.85;
 	vertical-align: middle;   
     font-size: 1.5rem;
     font-weight: 500;  
@@ -49,5 +45,24 @@
 	display:inline-block;
 	text-align:center;
 	border-bottom-color:white;
-	border:0.3px solid;
-}
+	border:0.3px solid; 
+} */
+
+
+
+ .ytClass{	
+	cursor: pointer;
+	width:80px;
+	height:90%;
+	display:inline-block;
+	background-color: 	#CC0000;
+	border: none !important;
+	vertical-align: middle;   
+    font-size: 1.2em;    
+    color: white;    
+    text-align: center;
+    text-decoration: none;    
+    font-size: 16px;
+} 
+
+

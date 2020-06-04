@@ -21,8 +21,23 @@ function init(){
 	}, 2000);
 	
 	console.clear();
-	console.log('ready!');	
-	console.log(pos);
+	console.log('ready!');
+
+	//inject script file
+	var s = document.createElement('script');
+	// TODO: add "script.js" to web_accessible_resources in manifest.json
+	s.src = chrome.runtime.getURL('js/inject.js');
+	s.onload = function() {
+    	this.remove();
+	};
+	(document.head || document.documentElement).appendChild(s);
+
+	chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {		  
+		if (request.action){
+			console.log(request);
+		}			
+	});
+
 }
 
 function fnVideo () {	
@@ -42,7 +57,7 @@ function fnVideo () {
 			 }, 2000);
 		});
 
-		video.addEventListener('seeked', (event) => {			
+		video.addEventListener('	', (event) => {			
 			console.log('Video found the playback position it was looking for.');			
 			checkPos();				
 		})
@@ -52,18 +67,18 @@ function fnVideo () {
 
 
 function createDiv () {
-	console.log('Creando Div..');
+	//console.log('Creando Div..');
 	var host=getHost();
-	if(host=="www.youtube.com"){			
+	//if(host=="www.youtube.com"){			
 		var desc =  document.getElementById('description');
 		if(desc){
-			console.clear();
+			//console.clear();
 
 			var objClass = desc.getElementsByClassName(clase);
 			var objSelector = desc.querySelectorAll(selector);
 			
-			console.log('Cantidad: ' + objClass.length);
-			console.log('Cantidad: ' + objSelector.length);
+			//console.log('Cantidad: ' + objClass.length);
+			//console.log('Cantidad: ' + objSelector.length);
 
 			var H1 = 'h1.title.style-scope.ytd-video-primary-info-renderer';
 
@@ -71,7 +86,7 @@ function createDiv () {
 			var elem = document.getElementById('track');
 			
 			if(!elem){
-				console.log('Creando Div');
+				//console.log('Creando Div');
 				var div = document.createElement('div');
 				div.id='track';
 				div.style.display='none';
@@ -85,71 +100,64 @@ function createDiv () {
 			
 				btnAtras.addEventListener('mouseover',function(e){										
 					getPos();
-					getNombres();					
+					//getNombresNew();					
 					var title='';
 					var actual = trackActual(video.currentTime);					
-					if(actual>1){
-						var title = 'Anterior (' + parseFloat(actual-1) + ')';					
-					}					
-					this.setAttribute('title',title);
+					if(actual>1){						
+						//var title = nombres[actual-1];
+						var track = parseFloat(actual-1);						
+						var info = 'Track N° ' + track ;
+					}else{
+						var info = 'Track N° 1';
+					}	
+
+					this.setAttribute('title',info);
 					
 					console.clear();
-					console.log(video.currentTime + ' -  Track: ' + actual  + ' - ' + nombres[actual+1] );					
+					console.log(video.currentTime + ' -  Current track: ' + actual);					
 				})
 				
 				btnAdelante.addEventListener('mouseover',function(e){					
 					getPos();
-					getNombres();
+					//getNombresNew();
 					var title = '';					
 					var actual = trackActual(video.currentTime);
 					if(actual < pos.length){
-						var title = 'Siguiente (' + parseFloat(actual+1) + ')';
+						//var title = nombres[actual+1];
+						var track = parseFloat(actual+1);
+						var info = 'Track N° ' + track ;						
 					}					
-					this.setAttribute('title',title);					
+					this.setAttribute('title',info);
+										
 					
 					console.clear();
-					console.log(video.currentTime + ' -  Track: ' + actual  + ' - ' + nombres[actual+1] );
+					console.log(video.currentTime + ' -  Current track: ' + actual);					
 
 				})			
 			}	
-
-			// //infobar			
-			// var elem = document.getElementById('infobar');
-			// if (!elem){				
-			// 	var div = document.getElementById('columns');		
-			// 	if(div){
-			// 		elem = document.createElement('div');
-			// 		elem.id='infobar';					
-			// 		elem.innerText='VALUE';					
-			// 		div.appendChild(elem);					
-			// 		elem.style.width =  video.style.width;					
-			// 		elem.style.left =  video.style.left;
-			// 	}	
-			// }		
+					
 			
 		}else{
 			console.log('No Hay descripcion');
 		}		
+		
 		fnShow('track','block');
-	}	
+	
+		//}	
 }
 
 function checkPos(){	
-	console.log(pos);		
+	
 	var len = pos.length;	
-	if(len==0){		
-		console.log('No se encontraron tracks');
+	if(len==0){			
 		setColor('back',disableColor);
 		setColor('next',disableColor);
-	}else{
-		console.log('Se encontraron ' + pos.length + ' tracks');						
+	}else{	
 		setColor('back',enableColor);
 		setColor('next',enableColor);	
 	
 		if(video.currentTime >= pos[1]){		
-			setColor('back',enableColor);
-		}else{
-			//setColor('back',disableColor);
+			setColor('back',enableColor);		
 		}
 
 		if(video.currentTime < pos[len -1]){
@@ -180,8 +188,7 @@ function getPos(){
 				var obj = elem[i];
 				var nro = convert(obj); //obtener nro de la url
 				fillPos(nro); 			//llenar array con datos	
-			};			
-			console.log(pos);
+			};						
 		}		
 	}	
 	return pos;	
@@ -192,7 +199,6 @@ function fillPos(value){
 		pos.push(value);
 	}	
 }
-
 
 function fnShow(value){	
 
@@ -207,12 +213,7 @@ function fnShow(value){
 			$("#back").show().fadeIn(600);
 			$("#next").show().fadeIn(600);			
 		});	
-	}	
-	
-	//var elem = document.getElementById('track');
-	//if(elem){
-		//elem.style.display=value;
-	//}
+	}		
 }
 
 function fnAtras(){
@@ -339,7 +340,6 @@ function getHost(){
 	return location.hostname;
 }
 
-
 function getNombres() {	
 	nombres=[];
 	var elem = document.querySelectorAll('#description > yt-formatted-string > span');
@@ -367,11 +367,38 @@ function fixStr(value) {
 	return str;
 }
 
-function getNombresNew() {
-	var selectorName = 'yt-formatted-string.content.style-scope.ytd-video-secondary-info-renderer';
-	var elem = document.querySelectorAll(selectorName);
-	if (elem) {	
+function getNombresNew() {	
+	nombres=[];	
+
+	var prop = 'chapters';	
+	var obj = localStorage.getItem('ytInit');
+	if(obj){
+		if(obj.indexOf(prop)>0){
+			var objNew = JSON.parse(obj);
+			console.log('existe');		
+			console.log(objNew);
+
+			var obj = objNew.playerOverlays.playerOverlayRenderer.decoratedPlayerBarRenderer.decoratedPlayerBarRenderer.playerBar.chapteredPlayerBarRenderer.chapters;		
+			if(obj){
+				obj.forEach(e => {
+					var newName = e.chapterRenderer.title.simpleText;
+					nombres.push(newName);
+					console.log(newName);
+				});
+			}else{
+				console.log('No se han encontrado nombres from youtube');
+				getNombres();
+			}
+
+		}else{
+			console.log('no existe');
+			getNombres();
+		}	
+	}else{
+		console.log('no hay datos guardados');
+		getNombres();
 	}
+
 }
 
 
@@ -379,18 +406,3 @@ function lnk(value) {
 	//verifica si la url es de salto ej. watch?v=KBvfVKOv8WE&list=2&t=676s
 	return value.match(/\&t=/);
 }
-
-
-/* 
-function convert(input) {		
-	var str = input;
-	var times = str.split(":");
-	times.reverse();
-	var x = times.length, y = 0, z;
-	for (var i = 0; i < x; i++) {
-	    z = times[i] * Math.pow(60, i);
-	    y += z;
-	}	
-	return(y);	
-} 
-*/
