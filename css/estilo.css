@@ -1,31 +1,34 @@
+
+
 #track{
-	display:none;
+    height:25px !important;
+	width:300px;        
+	display:block !important;	
 }
 
 #infobar{
-	width: 30%;
-	height: 60px;
-	border: #fff 1px solid;
-	color: black;
-	font-size: 18px;
+	width: 100%;
+	display: none;
+	height: 40px;
+	background-color:darkslategrey;
+	color: bisque;
+	font-size: 1.5em;	
 	font-style: normal;
 	font-family: monospace;	
-	text-align: center;	
-	background-color: white;
-    position: absolute;
-    height: 60px;    
-    margin-bottom: 0px;
-	/* display: block; */
-    /* float: left; */
-    top: 100x;
+	text-align: center;		
+	position: relative; 
+	 padding-top: 20px;   
+	/* margin-top: 20%;  */
 }
 
 #back{
-	margin-left:0px;		
+	margin-left:0px;
+	display: inline-block;
 }
 
 #next{
 	margin-left:10px;		
+	display: inline-block;
 }
 
 /* original css */
@@ -55,17 +58,22 @@
 
  .ytClass{	
 	cursor: pointer;
-	width:80px;
-	height:90%;
+	width:80px;	
 	display:inline-block;
 	border: none !important;
 	vertical-align: middle;   
     font-size: 1em;    
-    color: white;    
+    color:  antiquewhite;    
     text-align: center;
-    text-decoration: none;    
-	font-size: 16px;
-	background-color: #bb1c2c;	
+    text-decoration: none;    	
+	background-color: #bb1c2c;
+	border-radius:3px;    
+	height:25px;
+	font-family: consolas;	
 } 
+
+.ytDisable{
+	background-color: grey;
+}
 
 
