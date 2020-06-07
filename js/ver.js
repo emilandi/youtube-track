@@ -372,16 +372,12 @@ function getNames(nro) {
 }
 
 
-
 // verifica si el valor tiene formato time HH:MM:SS
-function fnTime(value) {
-	//	/(?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d)/		
+function fnTime(value) {	
 	var timeFormat = /^([0-9]{2})\:([0-9]{2})$/;	
-	if(value.match(timeFormat)){
-		// console.log('is time format ' + value );
+	if(value.match(timeFormat)){		
 		return true
-	}else{
-		// console.log('not is time format ' + value);		
+	}else{		
 		return false;
 	}
 }
