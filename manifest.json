@@ -11,12 +11,10 @@
 		  "48": "img/icon.png",
 		  "128": "img/icon.png"        
 },   
-	"web_accessible_resources": [
-        "css/estilo.css","js/inject.js"
-    ],
+	"web_accessible_resources": ["css/estilo.css"],
    "content_scripts": [ {       
       "include_globs": [ "https://www.youtube.com/*" ],
-      "js": [ "js/jquery-2.1.4.min.js","js/ver.js","js/toastr.min.js","js/notify.min.js"],      
+      "js": [ "js/jquery-2.1.4.min.js","js/ver.js"],      
       "matches": ["https://www.youtube.com/*"],    
       "css":["css/estilo.css","css/toastr.min.css"], 
       "run_at": "document_end"      

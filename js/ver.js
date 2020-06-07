@@ -15,23 +15,17 @@ function init(){
 	
 	setTimeout(function() {		
 		createDiv();
-		fnVideo();
-		getPos();
-		checkPos();
+		fnVideo();	
 	}, 2000);
 	
 	console.clear();
 	console.log('ready!');	
+
 	var h1 = document.querySelector('h1');
 	var video = document.querySelector('video');
 	var desc = document.querySelector('#description');
 
-	console.log(h1,video,desc);
-
 	document.addEventListener('mousemove',createDiv);
-	
-
-
 }
 
 function createElement(tipo,id,clase,text) {
@@ -168,8 +162,8 @@ function showMsj(msj) {
 		elem.style.display='block';
 
 		setTimeout(function(){
-			$('#infobar').fadeOut(300);
-		}, 3000);
+			$('#infobar').fadeOut(300);			
+		}, 4000);
 		
 	}
 }
@@ -235,22 +229,6 @@ function fillPos(value){
 	}	
 }
 
-// function fnShow(value){	
-
-// 	//sino tiene tracks ocultar DIV
-// 	if(value=='none'){		
-// 		$("#track").fadeIn(600, function () {					
-// 			$("#back").show().fadeOut(600);
-// 			$("#next").show().fadeOut(600);			
-// 		});	
-// 	}else{
-// 		$("#track").fadeIn(600, function () {					
-// 			$("#back").show().fadeIn(600);
-// 			$("#next").show().fadeIn(600);			
-// 		});	
-// 	}		
-// }
-
 function fnAtras(){
 	var ntrack = 1;
 	var time = video.currentTime;		
@@ -271,11 +249,10 @@ function fnAtras(){
 	if(actual>1){
 		ntrack = actual - 1;
 	}
-	var msj = "Track N° " + ntrack;
 	
-	//toast(msj);	
-	//$("#back").notify(msj,{ position:"right" },"success" );
-	showMsj(msj);
+	var title = getNames(ntrack);	
+	
+	showMsj(title);
 	
 	playVideo(nro);	
 }
@@ -285,42 +262,16 @@ function fnAdelante(){
 	 var time = video.currentTime;	
 	 var nro = dameSalto(time,'next');				
 	 var actual = trackActual(time);	
-	 var msj = "Track N° " + parseFloat(actual + 1);
-	 console.log('Click Adelante - ','Track: '+ actual + ' Tiempo: ' + time +   ' -  Proximo: '  +  nro);	
-	 
-	 //toast(msj);
-	 //$('h1').notify(msj,{ position:"right" },"success" );
-	 showMsj(msj);
+	 var next = parseFloat(actual+1);
+	 var title = getNames(next);
+
+	 showMsj(title);
 	 playVideo(nro);	
+	 
+	 console.log('Click Adelante - ','Track: '+ actual + ' Tiempo: ' + time +   ' -  Proximo: '  +  nro);	
+
 }
 
-
-
-function toast(msj){
-	
-	//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js
-	//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css	
-	
-	toastr["success"]("Track N° " + msj);
-
-	toastr.options = {
-	  "closeButton": false,
-	  "debug": false,
-	  "newestOnTop": false,
-	  "progressBar": false,
-	  "positionClass": "toast-top-center",
-	  "preventDuplicates": false,
-	  "onclick": null,
-	  "showDuration": "200",
-	  "hideDuration": "100",
-	  "timeOut": "2000",
-	  "extendedTimeOut": "1000",
-	  "showEasing": "swing",
-	  "hideEasing": "linear",
-	  "showMethod": "fadeIn",
-	  "hideMethod": "fadeOut"
-	}	
-}
 
 function getMax() {
 	return Math.max(...pos);
@@ -357,7 +308,7 @@ function playVideo(nro){
 }
 
 function dameSalto(actual,action){
-	//console.clear();	
+	console.clear();	
 	
 	var elem = pos;	
 	if(action=='next'){
@@ -392,49 +343,47 @@ function convert(elem){
 	return 	nro;
 }
 
-// function createBtn(tipo,id,clase,texto) {	
+function getNames(nro) {
 	
-// 	var div = document.getElementById('track');		
-	
-// 	if (div){		
-// 		var btn = document.createElement(tipo);	
-// 		btn.classList.add(clase);
-// 		btn.id=id;
-// 		btn.innerText=texto;
-// 		div.appendChild(btn);
-// 	}else{
-// 		console.log('No existe DIV');
-// 	}	
-// 	return btn;	
-// }
-
-function getTime () {
-	return video.currentTime;
-}
-
-function getHost(){
-	return location.hostname;
-}
-
-function getNombres(nro) {	
-	// nombres=[];
-	// var elem = document.querySelectorAll('#description > yt-formatted-string > span');
-	
-	// elem.forEach(e => {		
-	// 	var fixNombres = fixStr(e.textContent);		
-	// 	nombres.push(fixNombres);
-	// });		
-	// console.log(nombres);	
-
-	var nro = 2;
+	var titleArray = [];
 	var tags = document.querySelector('#scriptTag').innerHTML;
-	var init = tags.indexOf('\\n' + nro);
-	var final = tags.indexOf('\\n' + parseFloat(nro + 1));
-	var nombre = tags.substring(init,final)
-	console.log(init,final,nombre)
-	return	nombre;
+	var elem = JSON.parse(tags);
+	var desc = elem.description;
+	var text = desc.split('\n');
+	var regFix = /^\d{2}|[-*+|]/g;		   //reg fix char
+	var reg = /([0-9]?[0-9]:[0-9][0-9])/g;  //reg time format
 	
+	text.forEach(element => {
+		var objTime = element.match(reg);
+		if(objTime){
+			var textObj = element.replace(reg, "");
+			var title  = textObj.replace(regFix,"").trim();
+			titleArray.push(title);
+			console.log(objTime,element,title);
+		}
+	});
+	
+	console.log(titleArray);
+	
+	var titleStr = titleArray[nro -1];
+	if(titleStr){
+		return titleStr.toUpperCase();
+	}
+}
 
+
+
+// verifica si el valor tiene formato time HH:MM:SS
+function fnTime(value) {
+	//	/(?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d)/		
+	var timeFormat = /^([0-9]{2})\:([0-9]{2})$/;	
+	if(value.match(timeFormat)){
+		// console.log('is time format ' + value );
+		return true
+	}else{
+		// console.log('not is time format ' + value);		
+		return false;
+	}
 }
 
 function fixStr(value) {			
@@ -451,44 +400,4 @@ function fixStr(value) {
 	
 	console.log(str);	
 	return str;
-}
-
-function getNombresNew() {	
-	nombres=[];	
-
-	var prop = 'chapters';	
-	var obj = localStorage.getItem('ytInit');
-	if(obj){
-		if(obj.indexOf(prop)>0){
-			var objNew = JSON.parse(obj);
-			console.log('existe');		
-			console.log(objNew);
-
-			var obj = objNew.playerOverlays.playerOverlayRenderer.decoratedPlayerBarRenderer.decoratedPlayerBarRenderer.playerBar.chapteredPlayerBarRenderer.chapters;		
-			if(obj){
-				obj.forEach(e => {
-					var newName = e.chapterRenderer.title.simpleText;
-					nombres.push(newName);
-					console.log(newName);
-				});
-			}else{
-				console.log('No se han encontrado nombres from youtube');
-				getNombres();
-			}
-
-		}else{
-			console.log('no existe');
-			getNombres();
-		}	
-	}else{
-		console.log('no hay datos guardados');
-		getNombres();
-	}
-
-}
-
-
-function lnk(value) {	
-	//verifica si la url es de salto ej. watch?v=KBvfVKOv8WE&list=2&t=676s
-	return value.match(/\&t=/);
 }
