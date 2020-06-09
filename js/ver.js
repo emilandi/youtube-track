@@ -1,31 +1,97 @@
 var video;
 var pos =  new Array();
 var nombres = new Array();
+var titleArray = new Array();
+var nextJump;
+
 var clase = 'yt-simple-endpoint style-scope yt-formatted-string';
 var selector = 'a.yt-simple-endpoint.style-scope.yt-formatted-string';
-var disableColor = 'grey';
-var enableColor = '#bb1c2c';
 
-$(window).load(init);
-$(document).ready(init);
+window.addEventListener('load',init);
 
-function init(){	
-	pos=[];
-	nombres=[];	
+$(document).ready(function(){
 	
-	setTimeout(function() {		
-		createDiv();
-		fnVideo();	
-	}, 2000);
+	setTimeout(function() {	
+		console.log('load init');
+		var h1 = document.querySelector('h1');
+		var desc = document.querySelector('#description');	
+		
+		video = document.querySelector('video');		
+				
+		if(video){
+		
+			video.addEventListener('canplay',init);
+			video.addEventListener('loadstart',init);			
+			video.addEventListener('playing',init);				
+
+			video.addEventListener('mouseenter',function(){
+				var nro = trackActual(video.currentTime);
+				var title = nombreActual(nro);
+				if(title){
+					showMsj(title);
+				}				
+			})		
+			
+			video.addEventListener('timeupdate',function(){			
+				var nro = video.currentTime;
+				
+				if(nro < 2){
+					console.log(nro);
+					init();
+				}
+
+				var actual = trackActual(nro);
+				var playIcon = '\u25B6 ';			
+				var cName =  nombreActual(actual);
+				if(cName){
+					var title = playIcon + cName;
+					var pbar =  document.querySelector('a#h1Title');
+					if(pbar){
+						pbar.innerText=title;
+						var queryURL =  'https://www.youtube.com/results?search_query=';
+						var urlTag = cName;
+						var href = queryURL + urlTag;
+						h1Title.href = href;
+					}
+				}else{
+					$('#h1Title').fadeOut(300);
+				}		
+				//console.log(nro,actual,cName,title);
+			})		
+		
+			console.log(h1,video,desc);	
+		}
+		
+		init();	
+	
+	}, 3000);
+
+	console.clear();		
+	console.log('ready!');
+
+	$("video").on("play", function (e) {		
+		init();
+	});
+
+});
+
+function init(){					
+	console.log('init');
+	pos=[];
+	nombres=[];		
+	
+	var tags = getPos();	
+	if(tags){		
+		getNames();	
+	}
+	
+	createDiv();
 	
 	console.clear();
-	console.log('ready!');	
+	console.log(elem.description);
 
-	var h1 = document.querySelector('h1');
-	var video = document.querySelector('video');
-	var desc = document.querySelector('#description');
-
-	document.addEventListener('mousemove',createDiv);
+		
+	console.log(titleArray,tags);		
 }
 
 function createElement(tipo,id,clase,text) {
@@ -45,40 +111,15 @@ function createElement(tipo,id,clase,text) {
 	return obj;	
 }
 
-function fnVideo () {	
-	var clase='video-stream html5-main-video';			
-
-	video = document.getElementsByClassName(clase)[0];
-	video = document.querySelector('video');
-
-	if(video){
-		
-		video.addEventListener("play", getPos);	//crear boton;				
-		video.addEventListener('canplay', (event) => {
-			console.log('CanPlay Video can start, but not sure it will play through.');			
-			 setTimeout(function() {
-			 	getPos();
-			 	checkPos();			 	
-			 }, 2000);
-		});
-
-		video.addEventListener('	', (event) => {			
-			console.log('Video found the playback position it was looking for.');			
-			checkPos();				
-		})
-	return video;
-	};
-}
-
-
-function createDiv () {
-	console.log('Creando Div');
+function createDiv () {	
+	
 	var desc =  document.getElementById('description');
 		
 	if(desc){
 		
+		//getPos(); //get tags
+		
 		//crear div + buttons								
-
 		var objClass = desc.getElementsByClassName(clase);
 		var objSelector = desc.querySelectorAll(selector);	
 
@@ -91,38 +132,45 @@ function createDiv () {
 			var div = createElement('div','track','','');
 			var btnAdelante = createElement('a','next','ytClass','>>');	
 			var btnAtras = createElement('a','back','ytClass','<<');
+			
+			var h1Title = createElement('a','h1Title','','');			
+			h1Title.target ="_blank";
+			h1Title.title="Search this track";
+			
 			div.appendChild(btnAtras);							
 			div.appendChild(btnAdelante);
-
+			div.appendChild(h1Title);
+			
 			root.appendChild(div);					
 	
 			btnAtras.addEventListener('click',fnAtras);
 			btnAdelante.addEventListener('click',fnAdelante);
 		
-			btnAtras.addEventListener('mouseover',function(e){										
-				getPos();					
+			btnAtras.addEventListener('mouseover',function(e){													
 				var title='';
 				var actual = trackActual(video.currentTime);					
 				if(actual>1){												
-					var track = parseFloat(actual-1);						
-					var info = 'Track N° ' + track ;
+					var nro = parseFloat(actual-1);						
+					var info = nombreActual(nro);
 				}else{
-					var info = 'Track N° 1';
+					var info = nombreActual(1);
 				}	
 
 				this.setAttribute('title',info);
 				
 				console.clear();
-				console.log(video.currentTime + ' -  Current track: ' + actual);					
+				console.log(video.currentTime + ' -  Current track: ' + actual);				
 			})
 			
-			btnAdelante.addEventListener('mouseover',function(e){					
-				getPos();					
+			btnAdelante.addEventListener('mouseover',function(e){									
 				var title = '';					
 				var actual = trackActual(video.currentTime);
 				if(actual < pos.length){					
-					var track = parseFloat(actual+1);
-					var info = 'Track N° ' + track ;						
+					var nro = parseFloat(actual+1);
+					var info = nombreActual(nro);
+					if(!info){					
+						var info='';
+					}
 				}					
 				this.setAttribute('title',info);										
 				
@@ -137,9 +185,25 @@ function createDiv () {
 	}else{
 		console.log('No Hay descripcion');
 	}		
-	$('track').fadeIn(600);
-	// fnShow('track','block');
-		
+	
+	$('#track').fadeIn(600);
+
+	// var len = checkPos();		
+	var len = pos.length;
+	
+	if(len > 0){					
+		$('.ytClass').removeClass("ytDisable");		
+	}else{			
+		$('.ytClass').addClass("ytDisable");		
+		//$('.ytClass').addClass("ytClass");
+		// if(video.currentTime < pos[len -1]){		
+		// 	$('#next.ytClass').addClass("ytDisable");	
+		// }else{
+		// 	$('#next.ytClass').removeClass("ytDisable");			
+		// }
+	}
+
+	$('.ytClass').fadeIn(300);	
 }
 
 
@@ -159,58 +223,54 @@ function showMsj(msj) {
 	var elem = document.getElementById('infobar');
 	if(elem){
 		elem.textContent=msj;
-		elem.style.display='block';
-
+		$('#infobar').fadeIn(600);			
 		setTimeout(function(){
 			$('#infobar').fadeOut(300);			
-		}, 4000);
-		
+		}, 4000);		
 	}
 }
 
+//checkea si el video tiene tags en la descripcion
 function checkPos(){	
-	
-	var len = pos.length;	
-	if(len==0){			
-		setColor('back',disableColor);
-		setColor('next',disableColor);
-		//$('.ytClass').fadeOut(300);
-	}else{	
-		$('.ytClass').fadeIn(300);
-		setColor('back',enableColor);
-		setColor('next',enableColor);	
-	
-		if(video.currentTime >= pos[1]){		
-			setColor('back',enableColor);		
-		}
-
-		if(video.currentTime < pos[len -1]){
-			setColor('next',enableColor);
-		}else{
-			setColor('next',disableColor);		
-		}	
-	}
-
 	return pos.length;
 }
 
 
-function setClass(value) {
-	document.querySelector(value).setClass(value);
-}
+function getNames() {
+	
+	titleArray=[];
+	
+	var tags = document.querySelector('#scriptTag');
+	
+	if(tags){
 
-function setColor(id,value) {
-	var elem = document.querySelector('a.ytClass#' + id);
-	//var elem = document.getElementById(id);
-	if(elem){
-		elem.style.backgroundColor=value;
+		var elem = JSON.parse(tags.innerHTML);
+		var desc = elem.description;
+		var text = desc.split('\n');		
+		var regFix = /^\d{2}|\(\)|[-*+.:|]/g      //reg fix char
+		var reg = /([0-9]?[0-9]:[0-9][0-9])/g;  //reg time format
+		
+		text.forEach(element => {
+			var objTime = element.match(reg);
+			if(objTime){
+				var textObj = element.replace(reg, "");
+				var title  = textObj.replace(regFix,"").trim();
+				titleArray.push(title);
+				//console.log(objTime,element,title);
+			}
+		});
+		
+		console.log(titleArray);		
 	}
 }
+
 
 function getPos(){
 	pos=[];	//array posiciones	
 	var desc = document.querySelector('div#description')	
+
 	if(desc){
+		console.log(desc);
 		var elem = desc.querySelectorAll(selector);				
 		if(elem.length > 0){			
 			for (i = 0; i <= elem.length - 1; i++) {	
@@ -219,7 +279,8 @@ function getPos(){
 				fillPos(nro); 			//llenar array con datos	
 			};						
 		}		
-	}	
+	}
+	console.log(pos);
 	return pos;	
 }
 
@@ -263,7 +324,7 @@ function fnAdelante(){
 	 var nro = dameSalto(time,'next');				
 	 var actual = trackActual(time);	
 	 var next = parseFloat(actual+1);
-	 var title = getNames(next);
+	 var title = nombreActual(next);
 
 	 showMsj(title);
 	 playVideo(nro);	
@@ -271,7 +332,6 @@ function fnAdelante(){
 	 console.log('Click Adelante - ','Track: '+ actual + ' Tiempo: ' + time +   ' -  Proximo: '  +  nro);	
 
 }
-
 
 function getMax() {
 	return Math.max(...pos);
@@ -294,6 +354,13 @@ function trackActual(nro) {
 			}
 		}		
 	};	
+}
+
+function nombreActual(nro) {	
+	var titleStr = titleArray[nro -1];
+	if(titleStr){
+		return titleStr.toUpperCase();
+	}
 }
 
 function playVideo(nro){
@@ -330,8 +397,7 @@ function dameSalto(actual,action){
 				console.log('Anterior: ' + target);							
 				return target;
 			}	
-		}	
-		
+		}			
 	}
 	
 }
@@ -342,35 +408,6 @@ function convert(elem){
 	var nro = url.substring(pos + 3).replace('s','');
 	return 	nro;
 }
-
-function getNames(nro) {
-	
-	var titleArray = [];
-	var tags = document.querySelector('#scriptTag').innerHTML;
-	var elem = JSON.parse(tags);
-	var desc = elem.description;
-	var text = desc.split('\n');
-	var regFix = /^\d{2}|[-*+|]/g;		   //reg fix char
-	var reg = /([0-9]?[0-9]:[0-9][0-9])/g;  //reg time format
-	
-	text.forEach(element => {
-		var objTime = element.match(reg);
-		if(objTime){
-			var textObj = element.replace(reg, "");
-			var title  = textObj.replace(regFix,"").trim();
-			titleArray.push(title);
-			console.log(objTime,element,title);
-		}
-	});
-	
-	console.log(titleArray);
-	
-	var titleStr = titleArray[nro -1];
-	if(titleStr){
-		return titleStr.toUpperCase();
-	}
-}
-
 
 // verifica si el valor tiene formato time HH:MM:SS
 function fnTime(value) {	
