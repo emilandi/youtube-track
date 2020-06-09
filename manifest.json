@@ -1,7 +1,7 @@
 {
 "manifest_version": 2,
 "name": "Youtube Track",
-"description": "Change next and prev track in full disc",
+"description": "Change and mannage tracklist in large videos",
 "version": "1.0.4",
 "icons": {"16": "img/icon.png",        
 		  "19": "img/icon.png",		  
