@@ -40,18 +40,24 @@ $(document).ready(function(){
 					init();
 				}
 
-				var actual = trackActual(nro);
-				var salto = dameSalto(nro,'next');
+				var actual = trackActual(nro);								
+				var salto = parseFloat(pos[actual+1]);
+				console.log('track:' + actual,nro,salto);
 				
-				if(salto <= actual){
+				//var salto = dameSalto(nro,'next');
+				
+				
+				if(nro > salto){
 					console.log('Cambiando track')	;
 					var playIcon = '\u25B6 ';			
 					var cName =  nombreActual(actual);
 					if(cName){
+						console.log(cName);
 						var title = playIcon + cName;
 						var pbar =  document.querySelector('a#h1Title');
 						if(pbar){
 							pbar.innerText=title;
+							pbar.style.display='inline-block';
 							var queryURL =  'https://www.youtube.com/results?search_query=';
 							var urlTag = cName;
 							var href = queryURL + urlTag;
