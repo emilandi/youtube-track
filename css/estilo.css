@@ -1,8 +1,13 @@
 
 #track{
     height:25px !important;
-	width:300px;        
+	width:100%;        
 	display:block !important;	
+}
+
+#h1time{	
+	float: right;
+	position: relative;	
 }
 
 #infobar{

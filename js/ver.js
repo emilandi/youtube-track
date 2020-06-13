@@ -2,7 +2,7 @@ var video;
 var pos =  new Array();
 var nombres = new Array();
 var titleArray = new Array();
-var nextJump;
+var salto;
 
 var clase = 'yt-simple-endpoint style-scope yt-formatted-string';
 var selector = 'a.yt-simple-endpoint.style-scope.yt-formatted-string';
@@ -10,6 +10,7 @@ var selector = 'a.yt-simple-endpoint.style-scope.yt-formatted-string';
 window.addEventListener('load',init);
 
 $(document).ready(function(){
+	
 	
 	setTimeout(function() {	
 		console.log('load init');
@@ -30,24 +31,27 @@ $(document).ready(function(){
 				if(title){
 					showMsj(title);
 				}				
-			})		
-			
+			})				
+				
 			video.addEventListener('timeupdate',function(){			
 				var nro = video.currentTime;
-				
 				if(nro < 2){
 					console.log(nro);
 					init();
 				}
 
 				var actual = trackActual(nro);								
-				var salto = parseFloat(pos[actual+1]);
-				console.log('track:' + actual,nro,salto);
 				
-				//var salto = dameSalto(nro,'next');
+				console.log('track:' + actual,nro,salto);				
 				
+				var time = secondsToString(nro);
+				var desc = secondsToString(pos[actual]-nro);
+				console.log(time,desc);
+			
+				document.getElementById('h1time').textContent=desc;    					
 				
-				if(nro > salto){
+				if(nro >= salto){
+					salto = parseFloat(pos[actual]);
 					console.log('Cambiando track')	;
 					var playIcon = '\u25B6 ';			
 					var cName =  nombreActual(actual);
@@ -67,9 +71,7 @@ $(document).ready(function(){
 						$('#h1Title').fadeOut(300);
 					}		
 				
-				}
-
-								
+				}									
 			})		
 		
 			console.log(h1,video,desc);	
@@ -88,10 +90,19 @@ $(document).ready(function(){
 
 });
 
+function secondsToString(seconds) {
+	d = Number(seconds);    
+    var m = Math.floor(d % 3600 / 60);
+    var s = Math.floor(d % 3600 % 60);
+
+    return ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
+  }
+
 function init(){					
 	console.log('init');
 	pos=[];
 	nombres=[];		
+	salto = 0;	
 	
 	var tags = getPos();	
 	if(tags){		
@@ -101,7 +112,7 @@ function init(){
 	createDiv();
 	
 	console.clear();	
-	console.log(titleArray,tags);		
+	console.log(titleArray,tags);	
 }
 
 function createElement(tipo,id,clase,text) {
@@ -121,17 +132,12 @@ function createElement(tipo,id,clase,text) {
 	return obj;	
 }
 
-function nextJump(nro) {
-	
-}
 
 function createDiv () {	
 	
 	var desc =  document.getElementById('description');
 		
-	if(desc){
-		
-		//getPos(); //get tags
+	if(desc){		
 		
 		//crear div + buttons								
 		var objClass = desc.getElementsByClassName(clase);
@@ -151,9 +157,12 @@ function createDiv () {
 			h1Title.target ="_blank";
 			h1Title.title="Search this track";
 			
+			var spanTime  = createElement('span','h1time','','');
+			
 			div.appendChild(btnAtras);							
 			div.appendChild(btnAdelante);
 			div.appendChild(h1Title);
+			div.appendChild(spanTime);
 			
 			if(root){
 				root.appendChild(div);					
@@ -180,18 +189,23 @@ function createDiv () {
 			
 			btnAdelante.addEventListener('mouseover',function(e){									
 				var title = '';					
-				var actual = trackActual(video.currentTime);
-				if(actual < pos.length){					
-					var nro = parseFloat(actual+1);
-					var info = nombreActual(nro);
-					if(!info){					
-						var info='';
-					}
-				}					
-				this.setAttribute('title',info);										
 				
-				console.clear();
-				console.log(video.currentTime + ' -  Current track: ' + actual);					
+				if(video){
+
+					var actual = trackActual(video.currentTime);
+					if(actual < pos.length){					
+						var nro = parseFloat(actual+1);
+						var info = nombreActual(nro);
+						if(!info){					
+							var info='';
+						}
+					}					
+					this.setAttribute('title',info);										
+					
+					console.clear();
+					console.log(video.currentTime + ' -  Current track: ' + actual);
+				
+				}										
 
 			})			
 		
@@ -264,8 +278,7 @@ function getNames() {
 			if(objTime){
 				var textObj = element.replace(reg, "");
 				var title  = textObj.replace(regFix,"").trim();
-				titleArray.push(title);
-				//console.log(objTime,element,title);
+				titleArray.push(title);				
 			}
 		});
 		
