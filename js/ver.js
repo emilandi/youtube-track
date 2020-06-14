@@ -47,8 +47,10 @@ $(document).ready(function(){
 				var time = secondsToString(nro);
 				var desc = secondsToString(pos[actual]-nro);
 				console.log(time,desc);
-			
-				document.getElementById('h1time').textContent=desc;    					
+				
+				if(desc != 0){
+					document.getElementById('h1time').textContent=desc;    					
+				}
 				
 				if(nro >= salto){
 					salto = parseFloat(pos[actual]);
@@ -91,11 +93,19 @@ $(document).ready(function(){
 });
 
 function secondsToString(seconds) {
+	
 	d = Number(seconds);    
     var m = Math.floor(d % 3600 / 60);
     var s = Math.floor(d % 3600 % 60);
-
-    return ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
+	
+	if(isNaN(s) || isNaN(m) ){		
+		var result = 0;
+	}else{
+		var result = ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
+	}
+	
+	return result;
+	
   }
 
 function init(){					
@@ -314,30 +324,35 @@ function fillPos(value){
 
 function fnAtras(){
 	var ntrack = 1;
-	var time = video.currentTime;		
-	var nro = dameSalto(time,'back');
-	var actual=trackActual(time);
-	console.log('Click Atras - ','Track: ' + actual + ' - ' + time +   ' Proximo: ' + nro);
-
-	//si el seek esta antes del primer track que vuelva a 00:00
-	if(time < pos[0]){
-		nro=0;	
-	}else{
-		//si esta en el primer track que vuelva a empezar
-		if(time > pos[0]  && time < pos[1] ){
-			nro=pos[0];
-		}
-	}	
 	
-	if(actual>1){
-		ntrack = actual - 1;
+	if(video){
+
+		var time = video.currentTime;		
+		var nro = dameSalto(time,'back');
+		var actual=trackActual(time);
+
+		//si el seek esta antes del primer track que vuelva a 00:00
+		if(time < pos[0]){
+			nro=0;	
+		}else{
+			//si esta en el primer track que vuelva a empezar
+			if(time > pos[0]  && time < pos[1] ){
+				nro=pos[0];
+			}
+		}	
+		
+		if(actual>1){
+			ntrack = actual - 1;
+		}
+		
+		var title = getNames(ntrack);			
+		showMsj(title);		
+		playVideo(nro);	
+		
+		console.log('Click Atras - ','Track: ' + actual + ' - ' + time +   ' Proximo: ' + nro);
+	
 	}
 	
-	var title = getNames(ntrack);	
-	
-	showMsj(title);
-	
-	playVideo(nro);	
 }
 
 function fnAdelante(){	

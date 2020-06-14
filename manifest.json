@@ -2,7 +2,7 @@
 "manifest_version": 2,
 "name": "Youtube Tracklist",
 "description": "Change and mannage tracklist in large videos",
-"version": "1.0.4",
+"version": "1.0.6",
 "icons": {"16": "img/icon.png",        
 		  "19": "img/icon.png",		  
 		  "24": "img/icon.png",
@@ -16,7 +16,7 @@
       "include_globs": [ "https://www.youtube.com/*" ],
       "js": [ "js/jquery-2.1.4.min.js","js/ver.js"],      
       "matches": ["https://www.youtube.com/*"],    
-      "css":["css/estilo.css","css/toastr.min.css"], 
+      "css":["css/estilo.css"], 
       "run_at": "document_end"      
    } ]
 	
