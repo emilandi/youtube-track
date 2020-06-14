@@ -42,14 +42,16 @@ $(document).ready(function(){
 
 				var actual = trackActual(nro);								
 				
-				console.log('track:' + actual,nro,salto);				
+				//console.log('track:' + actual,nro,salto);				
 				
 				var time = secondsToString(nro);
 				var desc = secondsToString(pos[actual]-nro);
-				console.log(time,desc);
+				//console.log(time,desc);
 				
 				if(desc != 0){
 					document.getElementById('h1time').textContent=desc;    					
+				}else{
+					document.getElementById('h1time').textContent="";    					
 				}
 				
 				if(nro >= salto){
@@ -191,6 +193,10 @@ function createDiv () {
 					var info = nombreActual(1);
 				}	
 
+				if(info==undefined){
+					info=""
+				}
+
 				this.setAttribute('title',info);
 				
 				console.clear();
@@ -210,6 +216,11 @@ function createDiv () {
 							var info='';
 						}
 					}					
+					
+					if(info==undefined){
+						info=""
+					}
+					
 					this.setAttribute('title',info);										
 					
 					console.clear();
